@@ -9,11 +9,14 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:wght@400;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #0a0a0a; color: white; margin: 0; padding: 0; font-family: 'DM Sans', sans-serif; }
+        body { background-color: #0a0a0a; color: white; margin: 0; padding: 0; min-height: 100vh; font-family: 'DM Sans', sans-serif; }
         .serif { font-family: 'Instrument Serif', serif; }
         .mono { font-family: 'Geist Mono', monospace; }
+        #root { min-height: 100vh; }
     </style>
 </head>
 <body>
@@ -22,85 +25,53 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
         const { 
-            BarChart3, TrendingUp, Users, Zap, HeartPulse, Music, 
-            CreditCard, Sparkles, Info, ChevronRight, ChevronDown, 
-            Monitor, ArrowLeft, Database, Calendar, Filter, Layers, 
-            Search, X, ExternalLink 
+            Users, TrendingUp, HeartPulse, Music, 
+            Zap, Sparkles, CreditCard, ChevronRight 
         } = lucide;
 
-        // --- SEU COMPONENTE APP COMPLETO ---
-        const App = () => {
-          const [currentView, setCurrentView] = useState('home');
-          const [activeBrand, setActiveBrand] = useState(null);
-          const [expandedStat, setExpandedStat] = useState(null);
-          const [mounted, setMounted] = useState(false);
+        function App() {
+            const [mounted, setMounted] = useState(false);
+            useEffect(() => { setMounted(true); }, []);
 
-          useEffect(() => { setMounted(true); }, []);
-
-          const stats = [
-            { id: 'total', label: 'Menções Totais', value: '140k+', sub: 'Legado Consolidado', icon: <Users className="w-5 h-5" />, accent: '#ec4899' },
-            { id: 'sentimento', label: 'Sentimento Positivo', value: '40%', sub: 'Nostalgia', icon: <TrendingUp className="w-5 h-5" />, accent: '#34d399' },
-            { id: 'saude', label: 'Macrotema Saúde', value: '919', sub: 'Exaustão física', icon: <HeartPulse className="w-5 h-5" />, accent: '#22d3ee' },
-            { id: 'chappell', label: 'Pico Chappell Roan', value: '966', sub: 'Gatilho dia 02/04', icon: <Music className="w-5 h-5" />, accent: '#facc15' }
-          ];
-
-          const brandStrategies = [
-            { id: 'risque', name: 'Risqué', category: 'Beleza', icon: <Sparkles />, color: '#db2777', action: 'Tutoriais Festival Look' },
-            { id: 'budweiser', name: 'Budweiser', category: 'Cultura', icon: <Music />, color: '#dc2626', action: 'Ressaca Cultural' },
-            { id: 'bradesco', name: 'Bradesco', category: 'Financeiro', icon: <CreditCard />, color: '#2563eb', action: 'Educação Financeira' }
-          ];
-
-          return (
-            <div className={`min-h-screen bg-[#0a0a0a] transition-opacity duration-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-              <nav className="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/80 backdrop-blur-md z-50">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center serif italic text-xl">L</div>
-                  <span className="mono font-bold text-xs tracking-tighter">LOLLA INSIGHTS 2026</span>
-                </div>
-                <div className="flex gap-6 mono text-[10px] font-bold uppercase text-white/40">
-                    <span className="text-white cursor-pointer">Home</span>
-                    <span className="hover:text-white cursor-pointer">Metodologia</span>
-                </div>
-              </nav>
-
-              <main className="max-w-5xl mx-auto px-6 py-20 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 border border-white/10 mono text-[10px] font-bold mb-8">
-                    <Zap className="w-3 h-3 text-yellow-400" /> MONITORAMENTO EM TEMPO REAL
-                </div>
-                <h1 className="text-6xl md:text-8xl font-black leading-[0.85] mb-10">
-                    O FESTIVAL <br/> NÃO ACABA <span className="serif italic font-normal text-pink-500">no domingo</span>
-                </h1>
-                
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-20">
-                  {stats.map(s => (
-                    <div key={s.id} className="bg-white/5 border border-white/10 p-8 rounded-3xl text-left hover:bg-white/10 transition-all cursor-pointer">
-                      <div style={{color: s.accent}} className="mb-4">{s.icon}</div>
-                      <div className="text-4xl font-black mb-1">{s.value}</div>
-                      <div className="text-xs font-bold text-white/50 uppercase">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
-                   {brandStrategies.map(b => (
-                     <div key={b.id} className="bg-white/5 border border-white/10 p-10 rounded-[40px] text-left">
-                        <div style={{backgroundColor: b.color}} className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6">{b.icon}</div>
-                        <h3 className="text-2xl font-black mb-1">{b.name}</h3>
-                        <p className="text-sm text-white/40 mb-6 italic">"{b.action}"</p>
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-pink-500 uppercase tracking-widest">
-                           Ver Estratégia <ChevronRight className="w-3 h-3"/>
+            return (
+                <div className={`transition-opacity duration-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+                    <nav className="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/80 backdrop-blur-md z-50">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center serif italic text-xl">L</div>
+                            <span className="mono font-bold text-xs tracking-tighter">LOLLA INSIGHTS 2026</span>
                         </div>
-                     </div>
-                   ))}
-                </div>
-              </main>
+                    </nav>
 
-              <footer className="py-20 border-t border-white/5 text-center">
-                 <p className="mono text-[10px] text-white/20 tracking-[0.3em]">ESTUDO DE CASO · 2026</p>
-              </footer>
-            </div>
-          );
-        };
+                    <main className="max-w-5xl mx-auto px-6 py-20 text-center">
+                        <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/5 border border-white/10 mono text-[10px] font-bold mb-8">
+                            <Zap className="w-3 h-3 text-yellow-400" /> MONITORAMENTO 2026
+                        </div>
+                        <h1 className="text-6xl md:text-8xl font-black leading-[0.85] mb-10">
+                            O FESTIVAL <br/> NÃO ACABA <span className="serif italic font-normal text-pink-500">no domingo</span>
+                        </h1>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-20 text-left">
+                            {[
+                                { label: 'Menções', val: '140k+', color: '#ec4899', icon: <Users/> },
+                                { label: 'Positivo', val: '40%', color: '#34d399', icon: <TrendingUp/> },
+                                { label: 'Saúde', val: '919', color: '#22d3ee', icon: <HeartPulse/> },
+                                { label: 'Pico', val: '966', color: '#facc15', icon: <Music/> }
+                            ].map((s, i) => (
+                                <div key={i} className="bg-white/5 border border-white/10 p-8 rounded-3xl">
+                                    <div style={{color: s.color}} className="mb-4">{s.icon}</div>
+                                    <div className="text-4xl font-black mb-1">{s.val}</div>
+                                    <div className="text-[10px] font-bold text-white/40 uppercase tracking-widest">{s.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </main>
+
+                    <footer className="py-20 border-t border-white/5 text-center text-white/20 mono text-[10px] tracking-widest">
+                        ESTUDO DE CASO · SOCIAL LISTENING
+                    </footer>
+                </div>
+            );
+        }
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
