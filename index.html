@@ -4,81 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lolla Insights 2026</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:wght@400;900&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #0a0a0a; color: white; margin: 0; font-family: 'DM Sans', sans-serif; }
-        .serif { font-family: 'Instrument Serif', serif; }
-        .mono { font-family: 'Geist Mono', monospace; }
-        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 32px; transition: all 0.3s; }
-        .card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-4px); }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/80 backdrop-blur-md z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center serif italic text-xl">L</div>
-            <span class="mono font-bold text-[10px] tracking-widest uppercase">Lolla Insights 2026</span>
-        </div>
-    </nav>
+<body class="bg-[#0a0a0a] text-white">
+    <div id="root"></div>
 
-    <main class="max-w-5xl mx-auto px-6 py-20 text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mono text-[10px] font-bold text-white/70 mb-8">
-            ESTUDO DE CASO: LOLLAPALOOZA BRASIL
-        </div>
-        
-        <h1 class="text-6xl md:text-8xl font-black leading-[0.85] mb-12 uppercase">
-            O Festival Não Acaba <br/> <span class="serif italic font-normal text-pink-500 normal-case">no domingo</span>
-        </h1>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Users, TrendingUp, HeartPulse, Music, Zap, Sparkles, CreditCard, ChevronRight } = lucide;
 
-        <p class="text-white/40 max-w-lg mx-auto mb-20 text-lg">
-            Como o Social Listening via YouScan transforma o legado digital do festival em oportunidade estratégica.
-        </p>
+        // SEU CÓDIGO DO ARQUIVO .JSX COMEÇA AQUI
+        const App = () => {
+          const [mounted, setMounted] = useState(false);
+          useEffect(() => { setMounted(true); }, []);
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-left">
-            <div class="card">
-                <div class="text-pink-500 mb-4 text-2xl">📊</div>
-                <div class="text-4xl font-black mb-1">140k+</div>
-                <div class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Menções Totais</div>
+          return (
+            <div className={`min-h-screen transition-opacity duration-1000 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <nav class="p-6 border-b border-white/10 flex justify-between items-center sticky top-0 bg-[#0a0a0a]/80 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center font-serif italic text-xl">L</div>
+                  <span class="font-mono font-bold text-[10px] tracking-widest uppercase">Lolla Insights 2026</span>
+                </div>
+              </nav>
+              <main class="max-w-5xl mx-auto px-6 py-20 text-center">
+                <h1 class="font-black text-6xl md:text-8xl leading-[0.85] mb-12 uppercase">
+                  O Festival Não Acaba <br/> <span class="font-serif italic font-normal text-pink-500 normal-case">no domingo</span>
+                </h1>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-20 text-left">
+                  <div class="bg-white/5 border border-white/10 p-8 rounded-3xl">
+                    <Users class="text-pink-500 mb-4 w-6 h-6" />
+                    <div class="text-4xl font-black mb-1">140k+</div>
+                    <div class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Menções Totais</div>
+                  </div>
+                  {/* ... outros cards ... */}
+                </div>
+              </main>
             </div>
-            <div class="card">
-                <div class="text-green-400 mb-4 text-2xl">📈</div>
-                <div class="text-4xl font-black mb-1">40%</div>
-                <div class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Sentimento Positivo</div>
-            </div>
-            <div class="card">
-                <div class="text-cyan-400 mb-4 text-2xl">🩺</div>
-                <div class="text-4xl font-black mb-1">919</div>
-                <div class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Macrotema Saúde</div>
-            </div>
-            <div class="card">
-                <div class="text-yellow-400 mb-4 text-2xl">🎵</div>
-                <div class="text-4xl font-black mb-1">966</div>
-                <div class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Pico Chappell Roan</div>
-            </div>
-        </div>
+          );
+        };
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
-            <div class="card text-left">
-                <div class="w-12 h-12 bg-pink-600 rounded-2xl mb-6 flex items-center justify-center text-xl">✨</div>
-                <h3 class="text-2xl font-black mb-2">Risqué</h3>
-                <p class="text-sm text-white/50 italic leading-relaxed">"Lançar tutoriais diários de looks inspirados nos maiores fandoms."</p>
-            </div>
-            <div class="card text-left">
-                <div class="w-12 h-12 bg-red-600 rounded-2xl mb-6 flex items-center justify-center text-xl">🎸</div>
-                <h3 class="text-2xl font-black mb-2">Budweiser</h3>
-                <p class="text-sm text-white/50 italic leading-relaxed">"Atuar como curadora da ressaca cultural com conteúdos de artistas."</p>
-            </div>
-            <div class="card text-left">
-                <div class="w-12 h-12 bg-blue-600 rounded-2xl mb-6 flex items-center justify-center text-xl">💳</div>
-                <h3 class="text-2xl font-black mb-2">Bradesco</h3>
-                <p class="text-sm text-white/50 italic leading-relaxed">"Transformar a dor do gasto em planejamento para o ciclo 2027."</p>
-            </div>
-        </div>
-    </main>
-
-    <footer class="py-20 border-t border-white/5 text-center text-white/20 mono text-[10px] tracking-[0.3em] uppercase">
-        © 2026 · Powered by YouScan
-    </footer>
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
