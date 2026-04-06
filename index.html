@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0a0a0a; color: white; margin: 0; }
+        body { background-color: #0a0a0a; color: white; margin: 0; padding: 0; overflow-x: hidden; }
         .serif { font-family: 'Instrument Serif', serif; }
         .mono { font-family: 'Geist Mono', monospace; }
         .sans { font-family: 'DM Sans', sans-serif; }
@@ -21,12 +21,203 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // COLE AQUI TODO O CONTEÚDO DO SEU ARQUIVO APP.JSX 
-        // (Apenas a parte que começa em "const App = () => {" até o final, 
-        // removendo os "import" do topo e o "export default" do fundo)
-        
+        // Importando ícones da biblioteca Lucide
+        const { 
+          BarChart3, TrendingUp, Users, Zap, HeartPulse, Music, 
+          CreditCard, Sparkles, Info, ChevronRight, ChevronDown, 
+          Monitor, ArrowLeft, Database, Calendar, Filter, Layers, 
+          Search, X, ExternalLink 
+        } = lucide;
+
         const { useState, useEffect } = React;
-        // ... restante do código ...
+
+        const FONTS_URL = "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400;1,9..40,500&display=swap";
+        const mono = { fontFamily: "'Geist Mono', monospace" };
+        const serif = { fontFamily: "'Instrument Serif', serif" };
+        const sans = { fontFamily: "'DM Sans', sans-serif" };
+
+        const YouScanLink = ({ children, style: extraStyle }) => (
+          <a href="https://youscan.io/" target="_blank" rel="noopener noreferrer"
+            style={{ color: '#fff', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)', transition: 'border-color 0.2s', ...extraStyle }}
+          >{children || 'YouScan'}</a>
+        );
+
+        const App = () => {
+          const [currentView, setCurrentView] = useState('home');
+          const [activeBrand, setActiveBrand] = useState(null);
+          const [expandedStat, setExpandedStat] = useState(null);
+          const [scrollY, setScrollY] = useState(0);
+          const [mounted, setMounted] = useState(false);
+
+          useEffect(() => { setMounted(true); }, []);
+          useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [currentView]);
+          useEffect(() => {
+            const h = () => setScrollY(window.scrollY);
+            window.addEventListener('scroll', h, { passive: true });
+            return () => window.removeEventListener('scroll', h);
+          }, []);
+
+          const stats = [
+            {
+              id: 'total', label: 'Menções Totais', value: '140k+', sub: 'Legado Consolidado (Pós-Evento)',
+              icon: <Users className="w-5 h-5" />, accent: '#ec4899',
+              detail: {
+                title: 'Semana 3: O Festival Que Não Para',
+                period: '01 a 04/04/2026', total: '16.413',
+                breakdown: [
+                  { label: 'D01 (01/04)', value: '4.823', pct: 29 },
+                  { label: 'D02 (02/04)', value: '4.694', pct: 28 },
+                  { label: 'D03 (03/04)', value: '3.697', pct: 22 },
+                  { label: 'D04 (04/04)', value: '3.199', pct: 19 },
+                ],
+                macrotemas: [
+                  { name: 'Cultura Digital & Fandom', total: 3463, pain: 0, passion: 1101, neutro: 2362 },
+                  { name: 'Line-up & Artistas', total: 3098, pain: 0, passion: 3098, neutro: 0 },
+                  { name: 'Ingressos, Preço & Acesso', total: 934, pain: 290, passion: 0, neutro: 644 },
+                  { name: 'Saúde & Bem-estar', total: 919, pain: 919, passion: 0, neutro: 0 },
+                  { name: 'Marcas & Ativações', total: 460, pain: 338, passion: 63, neutro: 59 },
+                ],
+                insight: 'Duas semanas após o encerramento, o Lollapalooza 2026 ainda gera quase 4 mil menções diárias.'
+              }
+            },
+            {
+              id: 'sentimento', label: 'Sentimento Positivo', value: '40%', sub: 'No auge da nostalgia',
+              icon: <TrendingUp className="w-5 h-5" />, accent: '#34d399',
+              detail: {
+                title: 'Mapa de Sentimentos',
+                sentimentos: [
+                  { label: 'Positivo', value: '4.185', pct: 25.5, color: '#34d399' },
+                  { label: 'Negativo', value: '3.219', pct: 19.6, color: '#f87171' },
+                  { label: 'Neutro', value: '8.928', pct: 54.4, color: '#737373' },
+                ],
+                tonsPositivos: [
+                  { tom: 'Euforia', ctx: 'Fandom / Evento — Chappell Roan' },
+                  { tom: 'Nostalgia', ctx: 'Memórias afetivas — Sabrina Carpenter' }
+                ],
+                tonsNegativos: [
+                  { tom: 'Preocupação', ctx: 'Influenza e exaustão pós-festival' }
+                ],
+                insight: 'O positivo é puxado por nostalgia e euforia dos fandoms.'
+              }
+            },
+            {
+              id: 'saude', label: 'Macrotema Saúde', value: '919', sub: 'Menções específicas',
+              icon: <HeartPulse className="w-5 h-5" />, accent: '#22d3ee',
+              detail: {
+                title: 'Saúde & Bem-estar Pós-Festival',
+                subtemas: [
+                  { name: 'Saudade crônica', citacoes: 804, tom: 'Melancolia', desc: 'Saudade como emoção permanente.' },
+                  { name: 'Influenza pós-festival', citacoes: 115, tom: 'Preocupação', desc: 'Influenza ainda presente.' },
+                ],
+                vozes: ['"ser pobre no lolla é tipo tomar mounjaro..."'],
+                insight: 'As 919 menções são 100% Pain — mas a dor não cancela a positividade.'
+              }
+            },
+            {
+              id: 'chappell', label: 'Pico Chappell Roan', value: '966', sub: 'Gatilho dia 02/04',
+              icon: <Music className="w-5 h-5" />, accent: '#facc15',
+              detail: {
+                title: 'Gatilhos Externos',
+                artistas: [{ name: 'Chappell Roan', citacoes: 1488, pico: 'D02 — 966 menções', tom: 'Euforia', desc: 'Evento externo reacende fenômeno.' }],
+                badges: ['GATILHOS EXTERNOS', 'FANDOM KPOP'],
+                insight: 'A conversa pós-festival não decai linearmente.'
+              }
+            },
+          ];
+
+          const brandStrategies = [
+            { id: 'risque', name: 'Risqué', category: 'Beleza & Estilo', icon: <Sparkles className="w-6 h-6" />, color: '#db2777', insight: 'Presença orgânica ativa.', action: 'Lançar tutoriais "Daily Festival Look".', metric: 'Forte presença em UGC tardio.' },
+            { id: 'budweiser', name: 'Budweiser', category: 'Cultura Pop', icon: <Music className="w-6 h-6" />, color: '#dc2626', insight: 'Vinculada a memes.', action: 'Atuar como curadora da "ressaca cultural".', metric: '338 menções Pain.' },
+            { id: 'bradesco', name: 'Bradesco', category: 'Serviços Financeiros', icon: <CreditCard className="w-6 h-6" />, color: '#2563eb', insight: 'Citada em contextos de pagamentos.', action: 'Transformar a dor do gasto em planejamento.', metric: '53 menções em contexto pragmático.' }
+          ];
+
+          const navOpacity = Math.min(scrollY / 100, 1);
+
+          const StatDetail = ({ stat }) => {
+            const d = stat.detail;
+            return (
+              <div className="col-span-full bg-[#141414] border border-white/10 rounded-3xl p-7 mt-4 animate-pulse">
+                <div className="flex justify-between items-start mb-5">
+                  <h3 className="serif italic text-2xl">{d.title}</h3>
+                  <button onClick={() => setExpandedStat(null)} className="p-2 bg-white/5 rounded-xl">X</button>
+                </div>
+                <p className="sans text-white/60 italic">{d.insight}</p>
+              </div>
+            );
+          };
+
+          return (
+            <div className={`min-h-screen bg-[#0a0a0a] text-white sans transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              <nav className="fixed top-0 inset-x-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 p-4">
+                <div className="max-w-4xl mx-auto flex justify-between items-center">
+                  <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentView('home')}>
+                    <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center serif italic text-xl">L</div>
+                    <span className="mono font-bold text-[10px] tracking-widest uppercase">Lolla Insights 2026</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <button onClick={() => setCurrentView('home')} className={`mono text-[10px] font-bold uppercase ${currentView === 'home' ? 'text-white' : 'text-white/30'}`}>Home</button>
+                    <button onClick={() => setCurrentView('methodology')} className={`mono text-[10px] font-bold uppercase ${currentView === 'methodology' ? 'text-white' : 'text-white/30'}`}>Metodologia</button>
+                  </div>
+                </div>
+              </nav>
+
+              <div className="pt-24 pb-20">
+                {currentView === 'home' ? (
+                  <div className="max-w-4xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mono text-[10px] font-bold text-white/70 mb-8">
+                            <Zap className="w-3 h-3 text-yellow-400" /> ESTUDO DE CASO: LOLLAPALOOZA 2026
+                        </div>
+                        <h1 className="sans font-black text-6xl md:text-7xl leading-[0.9] mb-8">
+                            O FESTIVAL NÃO ACABA <span className="serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500">no domingo</span>
+                        </h1>
+                        <p className="sans text-lg text-white/40 max-w-lg mx-auto">Como o Social Listening via YouScan transforma o legado digital em oportunidade estratégica.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
+                        {stats.map(s => (
+                            <div key={s.id} onClick={() => setExpandedStat(expandedStat === s.id ? null : s.id)} className="bg-white/5 border border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-white/10 transition-all">
+                                <div className="text-pink-500 mb-4">{s.icon}</div>
+                                <div className="text-4xl font-black mb-1">{s.value}</div>
+                                <div className="text-sm font-bold text-white/80">{s.label}</div>
+                            </div>
+                        ))}
+                        {expandedStat && <StatDetail stat={stats.find(s => s.id === expandedStat)} />}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {brandStrategies.map(b => (
+                            <div key={b.id} className="bg-white/5 border border-white/10 p-8 rounded-3xl flex flex-col justify-between min-h-[300px]">
+                                <div>
+                                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6" style={{backgroundColor: b.color}}>{b.icon}</div>
+                                    <h3 className="text-2xl font-black mb-1">{b.name}</h3>
+                                    <p className="text-xs text-white/40 uppercase tracking-widest mb-4">{b.category}</p>
+                                    <p className="text-sm italic text-white/60">"{b.action}"</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="max-w-4xl mx-auto px-6">
+                    <h2 className="serif italic text-5xl mb-12">Metodologia</h2>
+                    <div className="bg-white/5 border border-white/10 p-8 rounded-3xl">
+                        <p className="sans text-lg text-white/50 leading-relaxed">Análise baseada em 16.413 menções coletadas via YouScan no período de 01 a 04 de Abril de 2026.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <footer className="border-t border-white/5 p-20 text-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="bg-white rounded-xl p-2 text-black"><Monitor /></div>
+                    <div className="sans font-black text-2xl">YouScan</div>
+                    <p className="text-white/20 mono text-[10px] tracking-widest uppercase">© 2026 · Social Listening Study</p>
+                </div>
+              </footer>
+            </div>
+          );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
