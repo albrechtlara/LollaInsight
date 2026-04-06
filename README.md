@@ -1,2 +1,0 @@
-# LollaInsight
-Created with CodeSandbox
